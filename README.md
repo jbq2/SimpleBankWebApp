@@ -1,5 +1,6 @@
 # SimpleBankWebApp
 # [Link to SimpleBankApi](https://github.com/jbq2/SimpleBankApi)
+# [Link to Issues Page](https://github.com/jbq2/SimpleBankApi/issues)
 # Developed by Joshua Quizon
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.5.
 
