@@ -34,11 +34,13 @@
                         <label class="form-label" for="password">Password</label>
                         <input 
                         required
+                        minlength="8"
                         pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" 
                         ngModel name="passwordField" #passwordField="ngModel" [(ngModel)]="registrationData.password" type="password" id="password" class="form-control" />
                         <div class="alert alert-danger" *ngIf="passwordField.touched && !passwordField.valid">
                             <div *ngIf="passwordField.errors?.['required']">Password is required</div>
-                            <div *ngIf="passwordField.errors?.['pattern']">Password requires at least 1 letter, 1 digit, 1 special character, and at least 8 characters long</div>
+                            <div *ngIf="passwordField.errors?.['minlength']">Password must be at least 8 characters long</div>
+                            <div *ngIf="passwordField.errors?.['pattern']">Password cannot have spaces and requires at least 1 letter, 1 digit, and 1 special character</div>
                         </div>
                       </div>
                     </div>
