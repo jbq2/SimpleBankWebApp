@@ -10,12 +10,17 @@ import { Component, OnInit } from '@angular/core';
 export class RegisterComponent implements OnInit {
 
   /* registration interface initialization */
-  registrationData: Registration = {
+  public registrationData: Registration = {
     email: '',
     password: '',
     matching: ''
   };
-  valid: boolean = true;
+  /* marks if form submission was valid */
+  public valid: boolean = true;
+  public success: boolean = false;
+  /* map of booleans for describing what exactly went wrong */
+  public errors: Map<string, boolean> = new Map<string, boolean>();
+
 
   /* registration service will be used to send req to api */
   constructor(private registrationService: RegistrationService) { }
@@ -23,59 +28,69 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void { }
 
   onSubmit(): void {
+    /* everytime onSubmit is called, set valid and errors variables to their initial states */
+    this.valid = true;
+    this.success = false;
+    this.errors.set('hasEmptyField', false);
+    this.errors.set('hasInvalidEmail', false);
+    this.errors.set('hasTooShortPassword', false);
+    this.errors.set('hasInvalidPassword', false);
+    this.errors.set('hasNonMatchingPassword', false);
+
     console.warn('Your registration information has been submitted');
-    /*
-    console.log(this.registrationData.email);
-    console.log(this.registrationData.password);
-    console.log(this.registrationData.matching);
-    */
 
     let emailRegex: string = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$';
     let passwordRegex: string = '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$';
     
-    /* TODO: if invalid, post flash message saying was exactly went wrong */
-    let regex: RegExp = new RegExp(emailRegex);
-    if(this.registrationData.email.length == 0){
+    if(this.registrationData.email.length == 0 || this.registrationData.password.length == 0 || this.registrationData.matching.length == 0){
       this.valid = false;
-      console.warn('Email field must not be empty');
+      this.errors.set('hasEmptyField', true);
     }
     else{
+      let regex: RegExp = new RegExp(emailRegex);
       if(!regex.test(this.registrationData.email)){
         this.valid = false;
-        console.warn('Entered email is invalid');
+        this.errors.set('hasInvalidEmail', true);
       }
-    }
-    
-    regex = new RegExp(passwordRegex);
-    if(this.registrationData.password.length == 0){
-      this.valid = false;
-      console.warn('Password field must not be empty');
-    }
-    else{
+  
+      regex = new RegExp(passwordRegex);
       if(this.registrationData.password.length < 8){
         this.valid = false;
-        console.warn('Entered password is too short (must have >= 8 characters)');
+        this.errors.set('hasTooShortPassword', true);
       }
       if(!regex.test(this.registrationData.password)){
         this.valid = false;
-        console.warn('Entered password is invalid (atleast 1 letter, 1 special character, 1 digit)');
+        this.errors.set('hasInvalidPassword', true);
       }
-    }
-
-    if(this.registrationData.matching.length == 0){
-      this.valid = false;
-      console.warn('Password confirmation field must not be empty');
-    }
-    else{
+  
       if(this.registrationData.password != this.registrationData.matching){
         this.valid = false;
-        console.warn('Entered password confirmation does not match entered password');
+        this.errors.set('hasNonMatchingPassword', true);
       }
     }
 
+    console.log(this.errors);
+
     if(this.valid){
-      /* TODO: if valid, proceed send registrationData to api */
       console.warn('Valid form submission');
+      /* TODO:
+      - send request to SimpleBankApi (registrationService.sendForm(registrationData))
+      - save request (response = registrationService.sendForm(registrationData))
+        - response type: Response (interface)
+            interface Response{
+              responseType: string
+              httpStatus: string
+              statusCode: number
+              message: string
+              body: Map<string, any> 
+            }
+        - if response.responseType == SUCCESS:
+          - success = true
+          - show green alert
+        - else:
+          - assess response.body.get('registrationStatus')
+          - depending on the specific status, show the appropriate red alert
+      */
     }
     else{
       console.warn('Invalid form submission');

@@ -10,5 +10,5 @@ export class RegistrationService {
 
   constructor(private http: HttpClient) { }
 
-  
+  /* TODO: http.post sendFrom */
 }
