@@ -28,7 +28,7 @@
                         maxlength="100"
                         pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
                         ngModel name="emailField" #emailField="ngModel" [(ngModel)]="registrationData.email" id="email" class="form-control" />
-                        <div class="alert alert-danger" *ngIf="emailField.touched && !emailField.valid">
+                        <div class="alert alert-danger" *ngIf="emailField.touched && !emailField.valid && !valid">
                             <div *ngIf="emailField.errors?.['required']">Email is required.</div>
                             <div *ngIf="emailField.errors?.['maxlength']">Email must be at most 100 characters long.</div>
                             <div *ngIf="emailField.errors?.['pattern']">Email is invalid.</div>
@@ -45,7 +45,7 @@
                         minlength="8"
                         pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" 
                         ngModel name="passwordField" #passwordField="ngModel" [(ngModel)]="registrationData.password" type="password" id="password" class="form-control" />
-                        <div class="alert alert-danger" *ngIf="passwordField.touched && !passwordField.valid">
+                        <div class="alert alert-danger" *ngIf="passwordField.touched && !passwordField.valid && !valid">
                             <div *ngIf="passwordField.errors?.['required']">Password is required.</div>
                             <div *ngIf="passwordField.errors?.['minlength']">Password must be at least 8 characters long.</div>
                             <div *ngIf="passwordField.errors?.['pattern']">Password cannot have spaces and requires at least 1 letter, 1 digit, and 1 special character.</div>
@@ -61,7 +61,7 @@
                         required 
                         minlength="8"
                         ngModel name="confirmPasswordField" #confirmPasswordField="ngModel" [(ngModel)]="registrationData.matching" type="password" id="confirmPassword" class="form-control" />
-                        <div class="alert alert-danger" *ngIf="confirmPasswordField.touched && !confirmPasswordField.valid">
+                        <div class="alert alert-danger" *ngIf="confirmPasswordField.touched && !confirmPasswordField.valid && !valid">
                             <div *ngIf="confirmPasswordField.errors?.['required']">Password confirmation is required.</div>
                             <div *ngIf="confirmPasswordField.errors?.['minlength']">Password confirmation must be at least 8 characters long.</div>
                         </div>

@@ -88,9 +88,13 @@ export class RegisterComponent implements OnInit {
           - success = true
           - show green alert
         - else:
+          - valid = false
+          - console warn
           - assess response.body.get('registrationStatus')
           - depending on the specific status, show the appropriate red alert
       */
+      this.registrationData.matching = '';
+      this.registrationData.password = '';
     }
     else{
       console.warn('Invalid form submission');
