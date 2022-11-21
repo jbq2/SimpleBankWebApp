@@ -1,6 +1,7 @@
 import { Registration } from './../../interface/registration';
 import { RegistrationService } from './../../service/registration.service';
 import { Component, OnInit } from '@angular/core';
+import { CustomResponse } from 'src/app/interface/response';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit {
   public success: boolean = false;
   /* map of booleans for describing what exactly went wrong */
   public errors: Map<string, boolean> = new Map<string, boolean>();
+  public responseMessage: string = '';
 
 
   /* registration service will be used to send req to api */
@@ -28,7 +30,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void { }
 
   onSubmit(): void {
-    /* everytime onSubmit is called, set valid and errors variables to their initial states */
+    /* reset marking class level attributes to their initial values */
     this.valid = true;
     this.success = false;
     this.errors.set('hasEmptyField', false);
@@ -36,6 +38,7 @@ export class RegisterComponent implements OnInit {
     this.errors.set('hasTooShortPassword', false);
     this.errors.set('hasInvalidPassword', false);
     this.errors.set('hasNonMatchingPassword', false);
+    this.responseMessage = '';
 
     console.warn('Your registration information has been submitted');
 
@@ -73,26 +76,22 @@ export class RegisterComponent implements OnInit {
 
     if(this.valid){
       console.warn('Valid form submission');
-      /* TODO:
-      - send request to SimpleBankApi (registrationService.sendForm(registrationData))
-      - save request (response = registrationService.sendForm(registrationData))
-        - response type: Response (interface)
-            interface Response{
-              responseType: string
-              httpStatus: string
-              statusCode: number
-              message: string
-              body: Map<string, any> 
-            }
-        - if response.responseType == SUCCESS:
-          - success = true
-          - show green alert
-        - else:
-          - valid = false
-          - console warn
-          - assess response.body.get('registrationStatus')
-          - depending on the specific status, show the appropriate red alert
-      */
+
+      this.registrationService.registerUser(this.registrationData).subscribe((response: CustomResponse) => {
+        if(response.responseType == 'SUCCESS'){
+          this.success = true;
+        }
+        else{
+          console.warn(`API failed to register user because of response message:[ ${response.message} ]`);
+          if(response.message.length == 0){ 
+            this.responseMessage = 'Fatal API error.';
+          }
+          else{
+            this.responseMessage = response.message;
+          }
+        }
+      });
+
       this.registrationData.matching = '';
       this.registrationData.password = '';
     }

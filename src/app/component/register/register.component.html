@@ -16,6 +16,7 @@
                     <div *ngIf="errors.get('hasInvalidPassword')">Password is invalid.</div>
                     <div *ngIf="errors.get('hasNonMatchingPassword')">Passwords do not match.</div>
                   </div>
+                  <div class="alert alert-danger" *ngIf="!success && responseMessage.length != 0">{{ responseMessage }}</div>
                   <div class="alert alert-success" *ngIf="success">Registered successfully!</div>
                   <form class="mx-1 mx-md-4" (ngSubmit)="onSubmit()">
   

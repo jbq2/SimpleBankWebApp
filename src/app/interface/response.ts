@@ -1,4 +1,4 @@
-export interface Response {
+export interface CustomResponse {
     responseType: string;
     httpStatus: string;
     statusCode: number;
