@@ -1,7 +1,7 @@
+import { CustomResponse } from './../../interface/response';
 import { Registration } from './../../interface/registration';
 import { RegistrationService } from './../../service/registration.service';
 import { Component, OnInit } from '@angular/core';
-import { CustomResponse } from 'src/app/interface/response';
 
 @Component({
   selector: 'app-register',
@@ -19,10 +19,10 @@ export class RegisterComponent implements OnInit {
   /* marks if form submission was valid */
   public valid: boolean = true;
   public success: boolean = false;
+  public showMessages: boolean = true;
   /* map of booleans for describing what exactly went wrong */
   public errors: Map<string, boolean> = new Map<string, boolean>();
   public responseMessage: string = '';
-
 
   /* registration service will be used to send req to api */
   constructor(private registrationService: RegistrationService) { }
@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
     /* reset marking class level attributes to their initial values */
     this.valid = true;
     this.success = false;
+    this.showMessages = false;
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
@@ -80,8 +81,11 @@ export class RegisterComponent implements OnInit {
       this.registrationService.registerUser(this.registrationData).subscribe((response: CustomResponse) => {
         if(response.responseType == 'SUCCESS'){
           this.success = true;
+          this.registrationData.matching = '';
+          this.registrationData.password = '';
         }
         else{
+          this.success = false;
           console.warn(`API failed to register user because of response message:[ ${response.message} ]`);
           if(response.message.length == 0){ 
             this.responseMessage = 'Fatal API error.';
@@ -91,13 +95,12 @@ export class RegisterComponent implements OnInit {
           }
         }
       });
-
-      this.registrationData.matching = '';
-      this.registrationData.password = '';
     }
     else{
       console.warn('Invalid form submission');
     }
+
+    this.showMessages = true;
   }
 
 }

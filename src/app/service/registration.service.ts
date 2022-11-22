@@ -15,6 +15,6 @@ export class RegistrationService {
 
   registerUser(registrationData: Registration): Observable<CustomResponse> {
     /* returns an a Response object wrapped in an Observable */
-    return this.http.post<CustomResponse>(`${this.url}/login`, registrationData);
+    return this.http.post<CustomResponse>(`${this.url}/register`, registrationData);
   }
 }
