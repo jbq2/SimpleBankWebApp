@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { CustomResponse } from './../../interface/response';
 import { Registration } from './../../interface/registration';
 import { RegistrationService } from './../../service/registration.service';
@@ -25,7 +26,9 @@ export class RegisterComponent implements OnInit {
   public responseMessage: string = '';
 
   /* registration service will be used to send req to api */
-  constructor(private registrationService: RegistrationService) { }
+  constructor(private registrationService: RegistrationService, private title: Title) {
+    this.title.setTitle('Register | Blue Pig Bank')
+  }
 
   ngOnInit(): void { }
 
@@ -76,7 +79,7 @@ export class RegisterComponent implements OnInit {
     console.log(this.errors);
 
     if(this.valid){
-      console.warn('Valid form submission');
+      console.warn('Valid form submission on front end');
 
       this.registrationService.registerUser(this.registrationData).subscribe((response: CustomResponse) => {
         if(response.responseType == 'SUCCESS'){
