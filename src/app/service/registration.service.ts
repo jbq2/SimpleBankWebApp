@@ -1,3 +1,4 @@
+import { ApiLink } from './../constant/api-link';
 import { Registration } from './../interface/registration';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,12 +10,10 @@ import { CustomResponse } from '../interface/response';
 })
 export class RegistrationService {
 
-  private readonly url = 'http://localhost:8080/api/v1';
-
   constructor(private http: HttpClient) { }
 
   registerUser(registrationData: Registration): Observable<CustomResponse> {
     /* returns an a Response object wrapped in an Observable */
-    return this.http.post<CustomResponse>(`${this.url}/register`, registrationData);
+    return this.http.post<CustomResponse>(`${ApiLink.local}/register`, registrationData);
   }
 }

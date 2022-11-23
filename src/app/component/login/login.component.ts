@@ -1,3 +1,5 @@
+import { CustomResponse } from './../../interface/response';
+import { LoginService } from './../../service/login.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -15,9 +17,12 @@ export class LoginComponent implements OnInit {
     password: ''
   }
   public valid: boolean = true;
+  public success: boolean = false;
+  public apiError: boolean = false;
   public errors: Map<string, boolean> = new Map<string, boolean>();
+  public responseMessage: string = '';
 
-  constructor(private http: HttpClient, private title: Title) {
+  constructor(private http: HttpClient, private loginService: LoginService, private title: Title) {
     this.title.setTitle('Login | Blue Pig Bank');
   }
 
@@ -25,6 +30,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.valid = true;
+    this.success = false;
+    this.apiError = false;
+    this.responseMessage = '';
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
@@ -52,7 +60,24 @@ export class LoginComponent implements OnInit {
     if(this.valid){
       console.warn('Valid form submission on front end');
 
-      /* TODO: call api to verify login information */
+      this.loginService.loginUser(this.loginData).subscribe((response: CustomResponse) =>{
+        this.responseMessage = response.message;
+        if(this.responseMessage == 'SUCCESS'){
+          this.success = true;
+          /* TODO: replace PLACEHOLDER_FOR_LOGIN_INFO with the login information */
+          response.body = new Map(Object.entries(response.body));
+          // localStorage.setItem(response.body.get('loginEmail')!, 'PLACEHOLDER_FOR_LOGIN_INFO');
+          console.log(response.body);
+          /* TODO: redirect to some other page */
+        }
+        else{
+          this.apiError = true;
+          if(this.responseMessage.length == 0){
+            /* TODO: display Fatal API error message */
+            this.responseMessage = 'API could not process your request.'
+          }
+        }
+      });
     }
   }
 
