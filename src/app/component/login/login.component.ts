@@ -65,11 +65,6 @@ export class LoginComponent implements OnInit {
         if(this.responseMessage == 'SUCCESS'){
           this.success = true;
           response.body = new Map(Object.entries(response.body));
-          /* TODO: think about what to actuall store inside of localStorage */
-            /* obviously store user data upon logging in */
-            /* questions: */
-              /* is storing entire userDetails as a value okay? */
-              /* is storing email and authorities sufficient? */
           localStorage.setItem(response.body.get('loginEmail')!, response.body.get('userDetails')!);
           console.log(response.body);
           /* TODO: redirect to some other page */
