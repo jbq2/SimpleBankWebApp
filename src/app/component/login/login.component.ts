@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         if(this.responseMessage == 'SUCCESS'){
           this.success = true;
           response.body = new Map(Object.entries(response.body));
-          localStorage.setItem(response.body.get('loginEmail')!, response.body.get('userDetails')!);
+          localStorage.setItem('SESSION_ID', response.body.get('SESSION_ID')!);
           console.log(response.body);
           /* TODO: redirect to some other page */
         }
