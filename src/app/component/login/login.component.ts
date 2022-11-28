@@ -1,6 +1,6 @@
 import { CustomResponse } from './../../interface/response';
 import { LoginService } from './../../service/login.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Login } from 'src/app/interface/login';
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   public apiError: boolean = false;
   public errors: Map<string, boolean> = new Map<string, boolean>();
   public responseMessage: string = '';
+  public responseCode: number = 0;
 
   constructor(private http: HttpClient, private loginService: LoginService, private title: Title) {
     this.title.setTitle('Login | Blue Pig Bank');
@@ -59,23 +60,29 @@ export class LoginComponent implements OnInit {
 
     if(this.valid){
       console.warn('Valid form submission on front end');
+      this.loginService.loginUser(this.loginData).subscribe({
+        next: (response) => console.log(response),
+        error: (e) => console.log(e),
+        complete: () => console.info('complete')
+      }
+      // (response: Map<string, string>) => {
+      //   this.responseCode = 200;
+      //   this.responseMessage = 'Successfully logged in.';
+      //   console.log(response);
+      //   // TODO: save sessionId to cookie
+      //   this.success = true;
+      // },
+      // (error: HttpErrorResponse) => {
+      //   this.responseCode = error.status;
+      //   if(this.responseCode >= 500){
+      //     this.responseMessage = 'You are already logged in.';
+      //   }
+      //   else{
+      //     this.responseMessage = 'Incorrect credentials.';
+      //   }
+      // }
+      );
 
-      this.loginService.loginUser(this.loginData).subscribe((response: CustomResponse) =>{
-        this.responseMessage = response.message;
-        if(this.responseMessage == 'SUCCESS'){
-          this.success = true;
-          response.body = new Map(Object.entries(response.body));
-          localStorage.setItem('SESSION_ID', response.body.get('SESSION_ID')!);
-          console.log(response.body);
-          /* TODO: redirect to some other page */
-        }
-        else{
-          this.apiError = true;
-          if(this.responseMessage.length == 0){
-            this.responseMessage = 'API could not process your request.'
-          }
-        }
-      });
     }
   }
 
