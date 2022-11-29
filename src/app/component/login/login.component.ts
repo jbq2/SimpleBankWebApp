@@ -74,25 +74,7 @@ export class LoginComponent implements OnInit {
           this.loginData.password = '';
         },
         complete: () => console.info('complete')
-      }
-      // (response: Map<string, string>) => {
-      //   this.responseCode = 200;
-      //   this.responseMessage = 'Successfully logged in.';
-      //   console.log(response);
-      //   // TODO: save sessionId to cookie
-      //   this.success = true;
-      // },
-      // (error: HttpErrorResponse) => {
-      //   this.responseCode = error.status;
-      //   if(this.responseCode >= 500){
-      //     this.responseMessage = 'You are already logged in.';
-      //   }
-      //   else{
-      //     this.responseMessage = 'Incorrect credentials.';
-      //   }
-      // }
-      );
-
+      });
     }
   }
 

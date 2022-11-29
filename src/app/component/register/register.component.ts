@@ -98,24 +98,7 @@ export class RegisterComponent implements OnInit {
           this.responseMessage = e.error;
         },
         complete: () => console.info('complete')
-      }
-      // (response: Map<string, string>) => {
-      //   this.responseCode = 200;
-      //   this.responseMessage = 'Succesfully registered.';
-      //   console.log(response);
-      //   this.success = true;
-      // },
-      // (error: HttpErrorResponse) => {
-      //   this.responseCode = error.status;
-      //   if(this.responseCode >= 500){
-      //     this.responseMessage = 'Email already exists.';
-      //   }
-      //   else{
-      //     this.responseMessage = 'Invalid registration information.';
-      //   }
-      //   console.log(error);
-      // }
-      );
+      });
     }
     else{
       console.warn('Invalid form submission');
