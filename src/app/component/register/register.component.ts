@@ -1,5 +1,5 @@
+import { RegistrationResponse } from './../../interface/registration-response';
 import { Title } from '@angular/platform-browser';
-import { CustomResponse } from './../../interface/response';
 import { Registration } from './../../interface/registration';
 import { RegistrationService } from './../../service/registration.service';
 import { Component, OnInit } from '@angular/core';
@@ -84,27 +84,21 @@ export class RegisterComponent implements OnInit {
     if(this.valid){
       console.info('Valid form submission on front end');
       this.registrationService.registerUser(this.registrationData).subscribe({
-        next: (response) => console.log(response),
-        error: (e) => console.log(e),
+        next: (response) => {
+          console.log(response.email);
+          this.responseCode = 200;
+          this.responseMessage = response.message;
+          this.success = true;
+          this.registrationData.password = '';
+          this.registrationData.matching = '';
+        },
+        error: (e: HttpErrorResponse) => {
+          console.log(e.error);
+          this.responseCode = e.status;
+          this.responseMessage = e.error;
+        },
         complete: () => console.info('complete')
-      }
-      // (response: Map<string, string>) => {
-      //   this.responseCode = 200;
-      //   this.responseMessage = 'Succesfully registered.';
-      //   console.log(response);
-      //   this.success = true;
-      // },
-      // (error: HttpErrorResponse) => {
-      //   this.responseCode = error.status;
-      //   if(this.responseCode >= 500){
-      //     this.responseMessage = 'Email already exists.';
-      //   }
-      //   else{
-      //     this.responseMessage = 'Invalid registration information.';
-      //   }
-      //   console.log(error);
-      // }
-      );
+      });
     }
     else{
       console.warn('Invalid form submission');

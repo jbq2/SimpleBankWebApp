@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { Functions } from '../lib/functions';
+import { RegistrationResponse } from '../interface/registration-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class RegistrationService {
 
   constructor(private http: HttpClient) { }
 
-  registerUser(registrationData: Registration): Observable<any> {
+  registerUser(registrationData: Registration): Observable<RegistrationResponse> {
     /* returns an a Response object wrapped in an Observable */
-    return this.http.post<Map<string, string>>(`${ApiLink.local}/register`, registrationData)
+    return this.http.post<RegistrationResponse>(`${ApiLink.local}/register`, registrationData)
     .pipe(catchError(Functions.handleHttpError));
     // return this.http.get<any>(`${ApiLink.local}/list`);
   }
