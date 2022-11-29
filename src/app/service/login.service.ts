@@ -4,6 +4,7 @@ import { Login } from './../interface/login';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Functions } from '../lib/functions';
+import { LoginResponse } from '../interface/login-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  loginUser(loginData: Login): Observable<any>{
+  loginUser(loginData: Login): Observable<LoginResponse>{
     /* returns CustomResponse wrapped in Observable; to be processed in the login.component.ts */
-    return this.http.post<Map<string, string>>(`${ApiLink.local}/login`, loginData)
+    return this.http.post<LoginResponse>(`${ApiLink.local}/login`, loginData)
     .pipe(catchError(Functions.handleHttpError));
   }
 }

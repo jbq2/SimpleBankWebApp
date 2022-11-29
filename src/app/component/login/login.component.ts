@@ -1,4 +1,3 @@
-import { CustomResponse } from './../../interface/response';
 import { LoginService } from './../../service/login.service';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -37,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
+    this.responseCode = 0;
 
     console.warn('Your login information has been submitted');
 
@@ -61,8 +61,18 @@ export class LoginComponent implements OnInit {
     if(this.valid){
       console.warn('Valid form submission on front end');
       this.loginService.loginUser(this.loginData).subscribe({
-        next: (response) => console.log(response),
-        error: (e) => console.log(e),
+        next: (response) => {
+          console.log(response.session_id);
+          this.responseCode = 200;
+          this.responseMessage = response.message;
+          this.success = true;
+          this.loginData.password = '';
+        },
+        error: (e: HttpErrorResponse) => {
+          this.responseCode = e.status;
+          this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
+          this.loginData.password = '';
+        },
         complete: () => console.info('complete')
       }
       // (response: Map<string, string>) => {
