@@ -1,5 +1,5 @@
-import { LoginService } from './../../service/login.service';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { LoginService } from '../../service/login.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Login } from 'src/app/interface/login';

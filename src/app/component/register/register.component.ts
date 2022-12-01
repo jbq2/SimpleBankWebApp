@@ -1,9 +1,8 @@
-import { RegistrationResponse } from './../../interface/registration-response';
 import { Title } from '@angular/platform-browser';
-import { Registration } from './../../interface/registration';
-import { RegistrationService } from './../../service/registration.service';
+import { Registration } from '../../interface/registration';
+import { RegistrationService } from '../../service/registration.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -51,7 +50,7 @@ export class RegisterComponent implements OnInit {
 
     let emailRegex: string = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$';
     let passwordRegex: string = '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$';
-    
+
     if(this.registrationData.email.length == 0 || this.registrationData.password.length == 0 || this.registrationData.matching.length == 0){
       this.valid = false;
       this.errors.set('hasEmptyField', true);
@@ -62,7 +61,7 @@ export class RegisterComponent implements OnInit {
         this.valid = false;
         this.errors.set('hasInvalidEmail', true);
       }
-  
+
       regex = new RegExp(passwordRegex);
       if(this.registrationData.password.length < 8){
         this.valid = false;
@@ -72,7 +71,7 @@ export class RegisterComponent implements OnInit {
         this.valid = false;
         this.errors.set('hasInvalidPassword', true);
       }
-  
+
       if(this.registrationData.password != this.registrationData.matching){
         this.valid = false;
         this.errors.set('hasNonMatchingPassword', true);
