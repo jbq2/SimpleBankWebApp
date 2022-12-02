@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img
+        src="https://user-images.githubusercontent.com/98120760/205399849-330ba7e2-d7cd-4a75-be86-9369d95cdfd3.png"
+        height="50"
+        alt=""
+        loading="lazy"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="basicNav.toggle()"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div
+      class="collapse navbar-collapse"
+      id="navbarNav"
+      mdbCollapse
+      #basicNav="mdbCollapse"
+    >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ baseUrl }}/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ baseUrl }}/register">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
