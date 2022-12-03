@@ -1,7 +1,7 @@
 import { ApiLink } from './../constant/api-link';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Login } from './../interface/login';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Functions } from '../lib/functions';
 import { LoginResponse } from '../interface/login-response';
@@ -17,5 +17,9 @@ export class LoginService {
     /* returns CustomResponse wrapped in Observable; to be processed in the login.component.ts */
     return this.http.post<LoginResponse>(`${ApiLink.local}/login`, loginData)
     .pipe(catchError(Functions.handleHttpError));
+  }
+
+  isLoggedIn(session_id: string){
+    
   }
 }

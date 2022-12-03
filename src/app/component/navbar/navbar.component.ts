@@ -1,4 +1,3 @@
-import { ApiLink } from './../../constant/api-link';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  tabs: Array<string> = []
   baseUrl: string = 'http://localhost:4200';
 
-  constructor() { }
+  constructor() { 
+
+  }
 
   ngOnInit(): void {
   }

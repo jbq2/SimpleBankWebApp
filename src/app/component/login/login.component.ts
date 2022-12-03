@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
       console.warn('Valid form submission on front end');
       this.loginService.loginUser(this.loginData).subscribe({
         next: (response) => {
-          console.log(response.session_id);
+          console.log(response);
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.success = true;
