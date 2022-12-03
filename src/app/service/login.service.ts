@@ -18,8 +18,4 @@ export class LoginService {
     return this.http.post<LoginResponse>(`${ApiLink.local}/login`, loginData)
     .pipe(catchError(Functions.handleHttpError));
   }
-
-  isLoggedIn(session_id: string){
-    
-  }
 }
