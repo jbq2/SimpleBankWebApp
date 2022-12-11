@@ -1,4 +1,5 @@
-import { ApiLink } from './../../constant/api-link';
+import { Pages } from '../../constant/pages';
+import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,10 +9,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
+  tabs = new Map([
+    ['Register', `${this.baseUrl}${Pages.tabLinks.get('Register')}`],
+    ['Login', `${this.baseUrl}${Pages.tabLinks.get('Login')}`]
+  ]);
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    /**
+     * calls getTabs from loginService to receive a Map of tabs
+     * contains a next and error clause for this observable (complete clause is pretty irrelevant)
+     */
+    this.loginService.getTabs(localStorage.getItem("SESSION_ID")!).subscribe({
+      next: (response) => { 
+        /**
+         * iterate through the map keys, setting each key (tab name) to hold its respective value from Pages.links
+         */
+        this.tabs = new Map(Object.entries(response));
+        console.log(this.tabs);
+        this.tabs.forEach((value: string, key: string) => {
+          this.tabs.set(key, Pages.tabLinks.get(key)!);
+        });
+      },
+      error: (e) => {
+        /**
+         * an error occurs when there is no session that exists for the user
+         * if the localStorge of the user is populated, they have logged in before and thus their session has timed out
+         * this error removes the SESSION_ID and AUTHORITIES fields in localStorage
+         */
+        if(localStorage.length != 0){
+          console.warn("Your session has expired");
+        }
+        localStorage.removeItem("SESSION_ID");
+        localStorage.removeItem("AUTHORITIES");
+        console.warn(e);
+      },
+      complete: () => { console.info("complete"); }
+    })
   }
-
 }
