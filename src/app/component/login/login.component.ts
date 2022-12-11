@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Login } from 'src/app/interface/login';
+import { Functions } from 'src/app/lib/functions';
 
 @Component({
   selector: 'app-login',
@@ -62,18 +63,37 @@ export class LoginComponent implements OnInit {
       console.warn('Valid form submission on front end');
       this.loginService.loginUser(this.loginData).subscribe({
         next: (response) => {
-          console.log(response);
+          /**
+           * the next clause for this observable handles a successful login attempt
+           * it displays a success message and then sets the SESSION_ID and AUTHORITIES in localStorage
+           * TODO: response message shouldn't really be shown--what should happen is that the user is redirected to a logged in home page
+           */
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.success = true;
           this.loginData.password = '';
+          localStorage.setItem('SESSION_ID', response.session_id);
+          localStorage.setItem('AUTHORITIES', JSON.stringify(response.authorities));
         },
         error: (e: HttpErrorResponse) => {
+          /**
+           * an error is caught upon receiving a non 200 response code
+           * if the error code is 401, the insufficient credentials were given
+           * the password field is cleared as a result for the user to try again
+           */
           this.responseCode = e.status;
           this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
           this.loginData.password = '';
         },
-        complete: () => console.info('complete')
+        complete: async () => {
+          /**
+           * complete reloads the page after 2 seconds
+           * TODO: this shouldn't really do anything; its sole purpose is for testing
+           * NOTE: this function is async because it calls sleep which returns a promise that is awaited
+           */
+          await Functions.sleep(2000);
+          location.reload();
+        }
       });
     }
   }
