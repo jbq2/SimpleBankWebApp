@@ -30,7 +30,10 @@ export class LoginService {
     return this.http.get<Map<string, string>>(`${ApiLink.local}/tabs`, {headers: headers});
   }
 
-  async isLoggedIn(SESSION_ID: string): Promise<string> {
+  async checkSessionStatus(SESSION_ID: string): Promise<string> {
+    if(SESSION_ID == null){
+      SESSION_ID = '';
+    }
     let headers: HttpHeaders = new HttpHeaders().set("sessionId", SESSION_ID);
     return await lastValueFrom(this.http.get<string>(`${ApiLink.local}/verify`, {headers: headers}));
   }

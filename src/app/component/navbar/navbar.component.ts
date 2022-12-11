@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
           this.tabs.set(key, Pages.tabLinks.get(key)!);
         });
       },
-      error: (e) => {
+      error: () => {
         /**
          * an error occurs when there is no session that exists for the user
          * if the localStorge of the user is populated, they have logged in before and thus their session has timed out
@@ -43,7 +43,6 @@ export class NavbarComponent implements OnInit {
         }
         localStorage.removeItem("SESSION_ID");
         localStorage.removeItem("AUTHORITIES");
-        console.warn(e);
       },
       complete: () => { console.info("complete"); }
     })

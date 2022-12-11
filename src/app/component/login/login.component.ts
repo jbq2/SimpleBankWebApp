@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Login } from 'src/app/interface/login';
 import { Functions } from 'src/app/lib/functions';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,28 @@ export class LoginComponent implements OnInit {
   public responseMessage: string = '';
   public responseCode: number = 0;
 
-  constructor(private http: HttpClient, private loginService: LoginService, private title: Title) {
+  constructor(private http: HttpClient, private loginService: LoginService, private title: Title, private route: ActivatedRoute, private router: Router) {
     this.title.setTitle('Login | Blue Pig Bank');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.valid = true;
+    this.success = false;
+    this.apiError = false;
+    this.responseMessage = '';
+    this.errors.set('hasEmptyField', false);
+    this.errors.set('hasInvalidEmail', false);
+    this.errors.set('hasTooShortPassword', false);
+    this.responseCode = 0;
+    this.route.queryParams.subscribe(params => {
+      if(params['redirect'] != null) {
+        this.errors.set('redirectError', true);
+      }
+      else{
+        this.errors.set('redirectError', false);
+      }
+    });
+  }
 
   onSubmit(): void {
     this.valid = true;
@@ -37,6 +55,7 @@ export class LoginComponent implements OnInit {
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
+    this.errors.set('redirectError', false);
     this.responseCode = 0;
 
     console.warn('Your login information has been submitted');
@@ -74,6 +93,7 @@ export class LoginComponent implements OnInit {
           this.loginData.password = '';
           localStorage.setItem('SESSION_ID', response.session_id);
           localStorage.setItem('AUTHORITIES', JSON.stringify(response.authorities));
+          this.router.navigate(['/dashboard'], { queryParams: {redirect: true} })
         },
         error: (e: HttpErrorResponse) => {
           /**
@@ -85,15 +105,7 @@ export class LoginComponent implements OnInit {
           this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
           this.loginData.password = '';
         },
-        complete: async () => {
-          /**
-           * complete reloads the page after 2 seconds
-           * TODO: this shouldn't really do anything; its sole purpose is for testing
-           * NOTE: this function is async because it calls sleep which returns a promise that is awaited
-           */
-          await Functions.sleep(2000);
-          location.reload();
-        }
+        complete: () => console.info('complete')
       });
     }
   }
