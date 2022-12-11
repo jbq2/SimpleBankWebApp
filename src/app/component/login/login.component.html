@@ -8,7 +8,8 @@
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                   <p class="text-center h1 mb-3 py-3">Login</p>
-                  <div class="alert alert-danger" *ngIf="errors.get('hasEmptyField')">All fields are required</div>
+                  <div class="alert alert-danger" *ngIf="errors.get('hasEmptyField')" >All fields are required</div>
+                  <div class="alert alert-danger" *ngIf="errors.get('redirectError')" >You must be logged in to access that page</div>
                   <div class="alert alert-success" *ngIf="responseCode == 200">{{ responseMessage }}</div> <!-- TODO: this is temporary -->
                   <div class="alert alert-danger" *ngIf="responseCode > 200">{{ responseMessage }}</div>
                     <form class="mx-1 mx-md-4" (ngSubmit)="onSubmit()">

@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <div class="alert alert-success" *ngIf="redirectedFromLogin" >Succesfully logged in!</div>
+        <div *ngIf="loggedIn">
+            <p>Welcome user!</p>
+            <p>Your session ID: {{ sessionId }}</p>
+        </div>
+    </body>
+</html>

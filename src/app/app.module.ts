@@ -26,6 +26,7 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestComponentComponent } from './component/test-component/test-component.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TestComponentComponent } from './component/test-component/test-componen
     RegisterComponent,
     LoginComponent,
     NavbarComponent,
-    TestComponentComponent
+    TestComponentComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

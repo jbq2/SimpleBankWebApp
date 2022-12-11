@@ -16,7 +16,7 @@ export class TestComponentComponent implements OnInit {
 
   ngOnInit(): void {
     console.info('test log');
-    this.loginService.isLoggedIn(localStorage.getItem("SESSION_ID")!)
+    this.loginService.checkSessionStatus(localStorage.getItem("SESSION_ID")!)
     .then((isLoggedIn) => {
       if(isLoggedIn){
         console.info("Session exists! You are logged in!");
