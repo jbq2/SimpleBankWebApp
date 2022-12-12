@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+
 <section class="vh-100" style="background-color: #eee;">
     <title>Blue Pig Bank | Login</title>
     <div class="container h-100">
@@ -10,6 +12,7 @@
                   <p class="text-center h1 mb-3 py-3">Login</p>
                   <div class="alert alert-danger" *ngIf="errors.get('hasEmptyField')" >All fields are required</div>
                   <div class="alert alert-danger" *ngIf="errors.get('redirectError')" >You must be logged in to access that page</div>
+                  <div class="alert alert-success" *ngIf="redirectedFromSignout" >Successfully signed out</div>
                   <div class="alert alert-success" *ngIf="responseCode == 200">{{ responseMessage }}</div> <!-- TODO: this is temporary -->
                   <div class="alert alert-danger" *ngIf="responseCode > 200">{{ responseMessage }}</div>
                     <form class="mx-1 mx-md-4" (ngSubmit)="onSubmit()">
