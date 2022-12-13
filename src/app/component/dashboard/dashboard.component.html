@@ -1,8 +1,10 @@
+<app-navbar></app-navbar>
+
 <html>
     <body>
         <div class="alert alert-success" *ngIf="redirectedFromLogin" >Succesfully logged in!</div>
         <div *ngIf="loggedIn">
-            <p>Welcome user!</p>
+            <p>Welcome {{ email }}!</p>
             <p>Your session ID: {{ sessionId }}</p>
         </div>
     </body>

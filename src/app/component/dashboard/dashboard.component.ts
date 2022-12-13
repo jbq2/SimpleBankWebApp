@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   loggedIn: boolean = false;
   redirectedFromLogin: boolean = false;
   sessionId: string = '';
+  email: string = '';
 
   constructor(private loginService: LoginService, private router: Router, private route: ActivatedRoute) { }
 
@@ -33,9 +34,10 @@ export class DashboardComponent implements OnInit {
         console.info("logged in");
         this.loggedIn = true;
         this.sessionId = localStorage.getItem("SESSION_ID")!;
+        this.email = localStorage.getItem("EMAIL")!;
       }
       else{
-        this.router.navigate(['/login'], { queryParams: { redirect: 'true' } });
+        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } });
       }
     })
     .catch((error) => console.warn(error));

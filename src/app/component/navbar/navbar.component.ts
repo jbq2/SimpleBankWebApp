@@ -1,3 +1,5 @@
+import { Router, ActivatedRoute } from '@angular/router';
+import { SignoutService } from './../../service/signout.service';
 import { Pages } from '../../constant/pages';
 import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,7 +16,7 @@ export class NavbarComponent implements OnInit {
     ['Login', `${this.baseUrl}${Pages.tabLinks.get('Login')}`]
   ]);
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     /**
@@ -26,10 +28,16 @@ export class NavbarComponent implements OnInit {
         /**
          * iterate through the map keys, setting each key (tab name) to hold its respective value from Pages.links
          */
-        this.tabs = new Map(Object.entries(response));
-        console.log(this.tabs);
-        this.tabs.forEach((value: string, key: string) => {
-          this.tabs.set(key, Pages.tabLinks.get(key)!);
+        this.route.params.subscribe({
+          next: (params) => {
+            if(params['redirectFrom'] != 'signout'){
+              this.tabs = new Map(Object.entries(response));
+              console.log(this.tabs);
+              this.tabs.forEach((value: string, key: string) => {
+                this.tabs.set(key, Pages.tabLinks.get(key)!);
+              });
+            }
+          }
         });
       },
       error: () => {
@@ -46,5 +54,11 @@ export class NavbarComponent implements OnInit {
       },
       complete: () => { console.info("complete"); }
     })
+  }
+
+  signout() {
+    let SESSION_ID = (localStorage.getItem("SESSION_ID") == null) ? '' : localStorage.getItem("SESSION_ID")!;
+    this.signoutService.signout(SESSION_ID);
+    this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} })
   }
 }

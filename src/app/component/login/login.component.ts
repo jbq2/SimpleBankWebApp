@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   public errors: Map<string, boolean> = new Map<string, boolean>();
   public responseMessage: string = '';
   public responseCode: number = 0;
+  public redirectedFromSignout: boolean = false;
 
   constructor(private http: HttpClient, private loginService: LoginService, private title: Title, private route: ActivatedRoute, private router: Router) {
     this.title.setTitle('Login | Blue Pig Bank');
@@ -37,9 +38,13 @@ export class LoginComponent implements OnInit {
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
     this.responseCode = 0;
+    this.redirectedFromSignout = false;
     this.route.queryParams.subscribe(params => {
-      if(params['redirect'] != null) {
+      if(params['redirectFrom'] == 'dashboard') {
         this.errors.set('redirectError', true);
+      }
+      else if(params['redirectFrom'] == 'signout') {
+        this.redirectedFromSignout = true;
       }
       else{
         this.errors.set('redirectError', false);
@@ -93,7 +98,8 @@ export class LoginComponent implements OnInit {
           this.loginData.password = '';
           localStorage.setItem('SESSION_ID', response.session_id);
           localStorage.setItem('AUTHORITIES', JSON.stringify(response.authorities));
-          this.router.navigate(['/dashboard'], { queryParams: {redirect: true} })
+          localStorage.setItem('EMAIL', response.email);
+          this.router.navigate(['/dashboard'], { queryParams: {redirect: true} });
         },
         error: (e: HttpErrorResponse) => {
           /**
@@ -105,7 +111,9 @@ export class LoginComponent implements OnInit {
           this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
           this.loginData.password = '';
         },
-        complete: () => console.info('complete')
+        complete: () => {
+          console.info('complete');
+        }
       });
     }
   }
