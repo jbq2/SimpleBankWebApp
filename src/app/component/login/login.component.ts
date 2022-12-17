@@ -40,11 +40,11 @@ export class LoginComponent implements OnInit {
     this.responseCode = 0;
     this.redirectedFromSignout = false;
     this.route.queryParams.subscribe(params => {
-      if(params['redirectFrom'] == 'dashboard') {
-        this.errors.set('redirectError', true);
-      }
-      else if(params['redirectFrom'] == 'signout') {
+      if(params['redirectFrom'] == 'signout') {
         this.redirectedFromSignout = true;
+      }
+      else if(params['redirectFrom'] != null) {
+        this.errors.set('redirectError', true);
       }
       else{
         this.errors.set('redirectError', false);
