@@ -44,8 +44,8 @@ export class NavbarComponent implements OnInit {
   }
 
   signout() {
-    let SESSION_ID = (localStorage.getItem("SESSION_ID") == null) ? '' : localStorage.getItem("SESSION_ID")!;
-    this.signoutService.signout(SESSION_ID);
+    let jwt = (localStorage.getItem("jwt") == null) ? '' : localStorage.getItem("jwt")!;
+    this.signoutService.signout(jwt);
     this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} })
   }
 }

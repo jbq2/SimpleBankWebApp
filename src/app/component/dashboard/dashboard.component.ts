@@ -1,6 +1,7 @@
 import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Functions } from 'src/app/lib/functions';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,17 +14,12 @@ export class DashboardComponent implements OnInit {
   redirectedFromLogin: boolean = false;
   jwt: string = '';
 
-  constructor(private loginService: LoginService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private functions: Functions, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    /**
-     * upon getting to the dashboard, check the status of the user's session
-     * if the user is logged in, FOR NOW print a welcome message including the session ID
-     * if the user is not logged in, redirect to login page
-     */
-    this.loginService.checkSessionStatus(localStorage.getItem("jwt")!)
-    .then((isLoggedIn) => {
-      if(isLoggedIn){
+
+    this.functions.isLoggedIn(localStorage.getItem("jwt")!).then((response) => {
+      if(response.isLoggedIn) {
         this.route.queryParams.subscribe({
           next: (params) => {
             this.redirectedFromLogin = params['redirect'] != null;
@@ -32,13 +28,13 @@ export class DashboardComponent implements OnInit {
         })
         console.info("logged in");
         this.loggedIn = true;
-        this.jwt = localStorage.getItem("jwt")!;
+        this.jwt = response.updatedJwt;
+        localStorage.setItem("jwt", response.updatedJwt);
       }
-      else{
-        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } });
+      else {
+        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } })
       }
-    })
-    .catch((error) => console.warn(error));
+    }).catch((error) => console.warn(error));
   }
 
 }
