@@ -11,8 +11,7 @@ export class DashboardComponent implements OnInit {
 
   loggedIn: boolean = false;
   redirectedFromLogin: boolean = false;
-  sessionId: string = '';
-  email: string = '';
+  jwt: string = '';
 
   constructor(private loginService: LoginService, private router: Router, private route: ActivatedRoute) { }
 
@@ -22,7 +21,7 @@ export class DashboardComponent implements OnInit {
      * if the user is logged in, FOR NOW print a welcome message including the session ID
      * if the user is not logged in, redirect to login page
      */
-    this.loginService.checkSessionStatus(localStorage.getItem("SESSION_ID")!)
+    this.loginService.checkSessionStatus(localStorage.getItem("jwt")!)
     .then((isLoggedIn) => {
       if(isLoggedIn){
         this.route.queryParams.subscribe({
@@ -33,8 +32,7 @@ export class DashboardComponent implements OnInit {
         })
         console.info("logged in");
         this.loggedIn = true;
-        this.sessionId = localStorage.getItem("SESSION_ID")!;
-        this.email = localStorage.getItem("EMAIL")!;
+        this.jwt = localStorage.getItem("jwt")!;
       }
       else{
         this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } });

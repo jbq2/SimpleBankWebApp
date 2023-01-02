@@ -25,16 +25,20 @@ export class LoginService {
    * depending on the SESSION_ID, its existence in the DB, and the roles of the user, a set of tabs will be returned
    * Map of tabs is returns wrapped in an observable, which will be subscribed to in navbar.component.ts
    */
-  getTabs(SESSION_ID: string): Observable<Map<string, string>> {
-    let headers: HttpHeaders = new HttpHeaders().set("sessionId", SESSION_ID);
+  getTabs(jwt: string): Observable<Map<string, string>> {
+    let headers: HttpHeaders = new HttpHeaders()
+    .set("Authorization", `Bearer ${jwt}`)
+    .set("jwt", jwt);
     return this.http.get<Map<string, string>>(`${ApiLink.local}/tabs`, {headers: headers});
   }
 
-  async checkSessionStatus(SESSION_ID: string): Promise<string> {
-    if(SESSION_ID == null){
-      SESSION_ID = '';
+  async checkSessionStatus(jwt: string): Promise<string> {
+    if(jwt == null){
+      jwt = '';
     }
-    let headers: HttpHeaders = new HttpHeaders().set("sessionId", SESSION_ID);
+    let headers: HttpHeaders = new HttpHeaders()
+    .set("Authorization", `Bearer ${jwt}`)
+    .set("jwt", jwt);
     return await lastValueFrom(this.http.get<string>(`${ApiLink.local}/verify`, {headers: headers}));
   }
 }

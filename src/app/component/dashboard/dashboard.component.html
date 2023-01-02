@@ -4,8 +4,7 @@
     <body>
         <div class="alert alert-success" *ngIf="redirectedFromLogin" >Succesfully logged in!</div>
         <div *ngIf="loggedIn">
-            <p>Welcome {{ email }}!</p>
-            <p>Your session ID: {{ sessionId }}</p>
+            <p>Your JWT: {{ jwt }}</p>
         </div>
     </body>
 </html>

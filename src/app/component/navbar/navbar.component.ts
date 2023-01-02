@@ -19,15 +19,8 @@ export class NavbarComponent implements OnInit {
   constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    /**
-     * calls getTabs from loginService to receive a Map of tabs
-     * contains a next and error clause for this observable (complete clause is pretty irrelevant)
-     */
-    this.loginService.getTabs(localStorage.getItem("SESSION_ID")!).subscribe({
+    this.loginService.getTabs(localStorage.getItem("jwt")!).subscribe({
       next: (response) => { 
-        /**
-         * iterate through the map keys, setting each key (tab name) to hold its respective value from Pages.links
-         */
         this.route.params.subscribe({
           next: (params) => {
             if(params['redirectFrom'] != 'signout'){
@@ -41,16 +34,10 @@ export class NavbarComponent implements OnInit {
         });
       },
       error: () => {
-        /**
-         * an error occurs when there is no session that exists for the user
-         * if the localStorge of the user is populated, they have logged in before and thus their session has timed out
-         * this error removes the SESSION_ID and AUTHORITIES fields in localStorage
-         */
         if(localStorage.length != 0){
           console.warn("Your session has expired");
         }
-        localStorage.removeItem("SESSION_ID");
-        localStorage.removeItem("AUTHORITIES");
+        localStorage.removeItem("jwt");
       },
       complete: () => { console.info("complete"); }
     })

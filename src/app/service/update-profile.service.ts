@@ -19,7 +19,6 @@ export class UpdateProfileService {
       email: localStorage.getItem('EMAIL'),
       authorities: auths
     };
-    const jwt = this.jwtHelper.;
     this.http.post<UpdateProfileResponse>(`${ApiLink.local}/user/update`, updateData);
   }
 }
