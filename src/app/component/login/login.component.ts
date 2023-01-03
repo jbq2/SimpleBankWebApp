@@ -91,6 +91,7 @@ export class LoginComponent implements OnInit {
            * it displays a success message and then sets the SESSION_ID and AUTHORITIES in localStorage
            * TODO: response message shouldn't really be shown--what should happen is that the user is redirected to a logged in home page
            */
+          console.log(response);
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.success = true;

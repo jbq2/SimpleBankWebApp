@@ -19,7 +19,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.functions.isLoggedIn(localStorage.getItem("jwt")!).then((response) => {
-      if(response.isLoggedIn) {
+      console.log(response);
+      if(response.loggedIn) {
         this.route.queryParams.subscribe({
           next: (params) => {
             this.redirectedFromLogin = params['redirect'] != null;

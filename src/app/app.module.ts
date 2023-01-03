@@ -27,6 +27,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { UpdateProfileComponent } from './component/update-profile/update-profile.component';
+import { Functions } from './lib/functions';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import { UpdateProfileComponent } from './component/update-profile/update-profil
     MdbValidationModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    Functions
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

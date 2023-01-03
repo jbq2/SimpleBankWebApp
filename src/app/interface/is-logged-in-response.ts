@@ -1,4 +1,4 @@
 export interface IsLoggedInResponse {
-    isLoggedIn: boolean,
+    loggedIn: boolean,
     updatedJwt: string
 }

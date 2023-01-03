@@ -1,8 +1,11 @@
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { createInjectableType } from '@angular/compiler';
+import { Injectable } from '@angular/core';
 import { throwError, lastValueFrom } from 'rxjs';
 import { ApiLink } from '../constant/api-link';
 import { IsLoggedInResponse } from '../interface/is-logged-in-response';
 
+@Injectable()
 export class Functions {
 
     constructor(private http: HttpClient) { }
