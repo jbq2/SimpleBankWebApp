@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Functions } from '../lib/functions';
 import { LoginResponse } from '../interface/login-response';
+import { Tab } from '../interface/tab';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,11 @@ export class LoginService {
    * depending on the SESSION_ID, its existence in the DB, and the roles of the user, a set of tabs will be returned
    * Map of tabs is returns wrapped in an observable, which will be subscribed to in navbar.component.ts
    */
-  getTabs(jwt: string): Observable<Map<string, string>> {
+  getTabs(jwt: string): Observable<Array<Tab>> {
     let headers: HttpHeaders = new HttpHeaders()
     .set("Authorization", `Bearer ${jwt}`)
     .set("jwt", jwt);
-    return this.http.get<Map<string, string>>(`${ApiLink.local}/tabs`, {headers: headers});
+    return this.http.get<Array<Tab>>(`${ApiLink.local}/tabs`, {headers: headers});
   }
 
   async checkSessionStatus(jwt: string): Promise<string> {

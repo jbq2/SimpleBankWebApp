@@ -24,9 +24,9 @@
       #basicNav="mdbCollapse"
     >
       <ul class="navbar-nav">
-        <li class="nav-item" *ngFor="let tab of tabs | keyvalue">
-          <a class="nav-link" *ngIf="tab.key != 'Sign Out'; else signOut" href="{{ tab.value }}">{{ tab.key }}</a>
-          <ng-template #signOut><a class="nav-link" (click)="signout()" id="signout" >{{ tab.key }}</a></ng-template>
+        <li class="nav-item" *ngFor="let tab of tabs">
+          <a class="nav-link" *ngIf="tab.name != 'Logout'; else signOut" href="{{ tab.path }}">{{ tab.name }}</a>
+          <ng-template #signOut><a class="nav-link" (click)="signout()" id="signout" >{{ tab.name }}</a></ng-template>
         </li>
       </ul>
     </div>

@@ -3,6 +3,8 @@ import { SignoutService } from './../../service/signout.service';
 import { Pages } from '../../constant/pages';
 import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
+import { ListKeyManager } from '@angular/cdk/a11y';
+import { Tab } from 'src/app/interface/tab';
 
 @Component({
   selector: 'app-navbar',
@@ -11,10 +13,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
-  tabs = new Map([
-    ['Register', `${this.baseUrl}${Pages.tabLinks.get('Register')}`],
-    ['Login', `${this.baseUrl}${Pages.tabLinks.get('Login')}`]
-  ]);
+  tabs: Array<Tab> = [];
 
   constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
@@ -24,11 +23,8 @@ export class NavbarComponent implements OnInit {
         this.route.params.subscribe({
           next: (params) => {
             if(params['redirectFrom'] != 'signout'){
-              this.tabs = new Map(Object.entries(response));
-              console.log(this.tabs);
-              this.tabs.forEach((value: string, key: string) => {
-                this.tabs.set(key, Pages.tabLinks.get(key)!);
-              });
+              this.tabs = response;
+              console.log(response);
             }
           }
         });
