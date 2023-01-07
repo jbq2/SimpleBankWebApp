@@ -1,9 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { SignoutService } from './../../service/signout.service';
-import { Pages } from '../../constant/pages';
 import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
-import { ListKeyManager } from '@angular/cdk/a11y';
 import { Tab } from 'src/app/interface/tab';
 
 @Component({
@@ -18,11 +16,12 @@ export class NavbarComponent implements OnInit {
   constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.loginService.getTabs(localStorage.getItem("jwt")!).subscribe({
+    let jwt = (localStorage.getItem('jwt') == null) ? '' : localStorage.getItem('jwt')!;
+    this.loginService.getTabs(jwt).subscribe({
       next: (response) => { 
         this.route.params.subscribe({
           next: (params) => {
-            if(params['redirectFrom'] != 'signout'){
+            if(params['redirectFrom'] != 'signout') {
               this.tabs = response;
               console.log(response);
             }
@@ -42,6 +41,7 @@ export class NavbarComponent implements OnInit {
   signout() {
     let jwt = (localStorage.getItem("jwt") == null) ? '' : localStorage.getItem("jwt")!;
     this.signoutService.signout(jwt);
+    localStorage.removeItem('jwt');
     this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} })
   }
 }
