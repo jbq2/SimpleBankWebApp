@@ -12,13 +12,13 @@ export class DashboardComponent implements OnInit {
 
   loggedIn: boolean = false;
   redirectedFromLogin: boolean = false;
-  jwt: string = '';
+  jwt: string = 'none';
 
   constructor(private functions: Functions, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    this.functions.isLoggedIn(localStorage.getItem("jwt")!).then((response) => {
+    let currJwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
+    this.functions.isLoggedIn(currJwt).then((response) => {
       console.log(response);
       if(response.loggedIn) {
         this.route.queryParams.subscribe({
@@ -35,7 +35,10 @@ export class DashboardComponent implements OnInit {
       else {
         this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } })
       }
-    }).catch((error) => console.warn(error));
+    }).catch((error) => {
+      console.warn(error);
+      this.router.navigate(['/login'], { queryParams: { redirectFrom: 'dashboard' } });
+    });
   }
 
 }

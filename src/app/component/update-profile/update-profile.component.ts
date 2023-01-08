@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Update } from 'src/app/interface/update';
 import { LoginService } from 'src/app/service/login.service';
+import { Functions } from 'src/app/lib/functions';
 
 @Component({
   selector: 'app-update-profile',
@@ -17,18 +18,10 @@ export class UpdateProfileComponent implements OnInit {
     matching: ''
   };
 
-  constructor(private loginService: LoginService, private router: Router, private updateProfileService: UpdateProfileService) { }
+  constructor(private functions: Functions, private router: Router, private updateProfileService: UpdateProfileService) { }
 
   ngOnInit(): void {
-    this.loginService.checkSessionStatus(localStorage.getItem("SESSION_ID")!)
-    .then((isLoggedIn) => {
-      if(isLoggedIn) {
-        this.email = localStorage.getItem('EMAIL')!;
-      }
-      else {
-        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'update-profile' }});
-      }
-    })
+    
   }
 
   onSubmit() {

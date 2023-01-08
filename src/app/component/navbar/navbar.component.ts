@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
   constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    let jwt = (localStorage.getItem('jwt') == null) ? '' : localStorage.getItem('jwt')!;
+    let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
     this.loginService.getTabs(jwt).subscribe({
       next: (response) => { 
         this.route.params.subscribe({
