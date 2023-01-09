@@ -1,8 +1,6 @@
 import { Authority } from "./authority";
 
 export interface LoginResponse {
-    session_id: string,
-    email: string,
-    authorities: Array<Authority>,
+    jwt: string,
     message: string
 }

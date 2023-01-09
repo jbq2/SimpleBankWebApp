@@ -2,7 +2,7 @@ import { UpdateProfileService } from './../../service/update-profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Update } from 'src/app/interface/update';
-import { LoginService } from 'src/app/service/login.service';
+import { Functions } from 'src/app/lib/functions';
 
 @Component({
   selector: 'app-update-profile',
@@ -17,18 +17,29 @@ export class UpdateProfileComponent implements OnInit {
     matching: ''
   };
 
-  constructor(private loginService: LoginService, private router: Router, private updateProfileService: UpdateProfileService) { }
+  constructor(private functions: Functions,private updateProfileService: UpdateProfileService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginService.checkSessionStatus(localStorage.getItem("SESSION_ID")!)
-    .then((isLoggedIn) => {
-      if(isLoggedIn) {
-        this.email = localStorage.getItem('EMAIL')!;
+    let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
+    this.functions.isLoggedIn(jwt).then((response) => {
+      console.log(response);
+      if(response.loggedIn) {
+        this.updateProfileService.getPageContent(jwt).subscribe({
+          next: (email) => {
+            console.info(email);
+            this.email = email;
+          },
+          error: (error) => {
+            console.warn(error);
+            this.router.navigate(['/login'], { queryParams: { redirectFrom: 'profile' } });
+          },
+          complete: () => { console.log('complete') }
+        }); 
       }
       else {
-        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'update-profile' }});
+        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'profile' } });
       }
-    })
+    });
   }
 
   onSubmit() {

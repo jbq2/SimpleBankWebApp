@@ -1,25 +1,24 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { ApiLink } from '../constant/api-link';
 import { Update } from '../interface/update';
-import { UpdateProfileResponse } from '../interface/update-profile-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UpdateProfileService {
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient) { }
+
+  getPageContent(jwt: string) {
+    let headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${jwt}`)
+    .set('jwt', jwt);
+    return this.http.get<string>(`${ApiLink.local}/user/content`, {headers: headers});
+  }
 
   requestToUpdate(updateData: Update) {
-    let authsJson = localStorage.getItem('AUTHORITIES');
-    let auths = (authsJson == null) ? [] : JSON.parse(authsJson);
-    const claims = {
-      email: localStorage.getItem('EMAIL'),
-      authorities: auths
-    };
-    const jwt = this.jwtHelper.;
-    this.http.post<UpdateProfileResponse>(`${ApiLink.local}/user/update`, updateData);
+   
   }
 }

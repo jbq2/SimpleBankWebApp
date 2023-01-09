@@ -9,8 +9,8 @@ export class SignoutService {
 
   constructor(private http: HttpClient) { }
 
-  signout(SESSION_ID: string): void {
-    let headers: HttpHeaders = new HttpHeaders().set("sessionId", SESSION_ID);
+  signout(jwt: string): void {
+    let headers: HttpHeaders = new HttpHeaders().set("jwt", jwt);
     this.http.get<string>(`${ApiLink.local}/signout`, { headers: headers }).subscribe({
       next: (message) => { console.info(message) },
       error: (e) => { console.warn(e) },
