@@ -17,14 +17,28 @@ export class UpdateProfileComponent implements OnInit {
     matching: ''
   };
 
-  constructor(private updateProfileService: UpdateProfileService) { }
+  constructor(private functions: Functions,private updateProfileService: UpdateProfileService, private router: Router) { }
 
   ngOnInit(): void {
     let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
-    this.updateProfileService.getPageContent(jwt).subscribe({
-      next: (response) => {console.info(response)},
-      error: (error) => {console.warn(error)},
-      complete: () => {console.log('complete')}
+    this.functions.isLoggedIn(jwt).then((response) => {
+      console.log(response);
+      if(response.loggedIn) {
+        this.updateProfileService.getPageContent(jwt).subscribe({
+          next: (email) => {
+            console.info(email);
+            this.email = email;
+          },
+          error: (error) => {
+            console.warn(error);
+            this.router.navigate(['/login'], { queryParams: { redirectFrom: 'profile' } });
+          },
+          complete: () => { console.log('complete') }
+        }); 
+      }
+      else {
+        this.router.navigate(['/login'], { queryParams: { redirectFrom: 'profile' } });
+      }
     });
   }
 
