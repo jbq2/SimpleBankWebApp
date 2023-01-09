@@ -2,7 +2,6 @@ import { UpdateProfileService } from './../../service/update-profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Update } from 'src/app/interface/update';
-import { LoginService } from 'src/app/service/login.service';
 import { Functions } from 'src/app/lib/functions';
 
 @Component({
@@ -18,10 +17,15 @@ export class UpdateProfileComponent implements OnInit {
     matching: ''
   };
 
-  constructor(private functions: Functions, private router: Router, private updateProfileService: UpdateProfileService) { }
+  constructor(private updateProfileService: UpdateProfileService) { }
 
   ngOnInit(): void {
-    
+    let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
+    this.updateProfileService.getPageContent(jwt).subscribe({
+      next: (response) => {console.info(response)},
+      error: (error) => {console.warn(error)},
+      complete: () => {console.log('complete')}
+    });
   }
 
   onSubmit() {

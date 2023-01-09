@@ -28,6 +28,7 @@ export class LoginService {
    */
   getTabs(jwt: string): Observable<Array<Tab>> {
     let headers: HttpHeaders = new HttpHeaders()
+    .set('Content-Type', 'application/json')
     .set("Authorization", `Bearer ${jwt}`)
     .set("jwt", jwt);
     return this.http.get<Array<Tab>>(`${ApiLink.local}/tabs`, {headers: headers});
