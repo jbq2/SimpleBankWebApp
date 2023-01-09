@@ -91,7 +91,7 @@ export class RegisterComponent implements OnInit {
           this.registrationData.password = '';
           this.registrationData.matching = '';
         },
-        error: (e: HttpErrorResponse) => {
+        error: (e) => {
           console.log(e.error);
           this.responseCode = e.status;
           this.responseMessage = e.error;
