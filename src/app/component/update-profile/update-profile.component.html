@@ -10,23 +10,41 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="text-right">Edit Profile</h2>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="labels">Email</label>
-                        <input type="text" class="form-control" placeholder="{{ email }}" value="" disabled>
+                <form (ngSubmit)="onSubmit()">
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email</label>
+                            <input type="text" class="form-control" placeholder="{{ email }}" value="" disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">New Password</label>
+                            <input type="password" class="form-control" value=""
+                            required
+                            minlength="8"
+                            pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                            ngModel name="password" #password="ngModel" [(ngModel)]="updateData.password">
+                            <div class="alert alert-danger" *ngIf="password.touched">
+                                <div *ngIf="password.errors?.['required']">Password is required.</div>
+                                <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</div>
+                                <div *ngIf="password.errors?.['pattern']">Password cannot have spaces and requires at least 1 letter, 1 digit, and 1 special character.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Confirm New Password</label>
+                            <input type="password" class="form-control" value=""
+                            required
+                            minlength="8"
+                            ngModel name="matching" #matching="ngModel" [(ngModel)]="updateData.matching">
+                            <div class="alert alert-danger" *ngIf="matching.touched">
+                                <div *ngIf="matching.errors?.['required']">Password confirmation is required.</div>
+                                <div *ngIf="matching.errors?.['minlength']">Password confirmation must be at least 8 characters long.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <label class="labels">New Password</label>
-                        <input type="text" class="form-control" value="">
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit" onsubmit="">Save</button>
                     </div>
-                    <div class="col-md-12">
-                        <label class="labels">Confirm New Password</label>
-                        <input type="text" class="form-control" value="">
-                    </div>
-                </div>
-                <div class="mt-5 text-center">
-                    <button class="btn btn-primary profile-button" type="button">Save Profile</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
