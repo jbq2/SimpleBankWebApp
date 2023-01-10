@@ -1,5 +1,5 @@
 export interface UpdateProfileResponse {
     email: string,
-    messages: string,
+    message: string,
     jwt: string
 }
