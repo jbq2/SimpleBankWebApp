@@ -18,7 +18,8 @@ export class UpdateProfileComponent implements OnInit {
     oldEmail: '',
     oldPassword: '',
     password: '',
-    matching: ''
+    matching: '',
+    jwt: localStorage.getItem('jwt')!
   };
   public valid: boolean = true;
   public errors: Map<string, boolean> = new Map<string, boolean>();
@@ -105,7 +106,8 @@ export class UpdateProfileComponent implements OnInit {
     
     if(this.valid) {
       console.info('Valid form submission on front end');
-      this.updateProfileService.requestToUpdate(this.updateData).subscribe({
+      let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
+      this.updateProfileService.requestToUpdate(jwt, this.updateData).subscribe({
         next: (response) => {
           console.log(response);
         },

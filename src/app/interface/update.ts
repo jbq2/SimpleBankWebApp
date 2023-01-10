@@ -3,5 +3,6 @@ export interface Update {
     oldEmail: string,
     oldPassword: string,
     password: string,
-    matching: string
+    matching: string,
+    jwt: string
 }
