@@ -23,11 +23,17 @@ export class UpdateProfileComponent implements OnInit {
   };
   public valid: boolean = true;
   public errors: Map<string, boolean> = new Map<string, boolean>();
+  public success: boolean = false;
+  public responseCode: number = 0;
+  public responseMessage: string = '';
 
   constructor(private functions: Functions,private updateProfileService: UpdateProfileService, private router: Router) { }
 
   ngOnInit(): void {
     this.valid = true;
+    this.success = false;
+    this.responseCode = 0;
+    this.responseMessage = '';
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortPassword', false);
@@ -62,6 +68,9 @@ export class UpdateProfileComponent implements OnInit {
 
   onSubmit() {
     this.valid = true;
+    this.success = false;
+    this.responseCode = 0;
+    this.responseMessage = '';
     this.errors.set('hasEmptyField', false);
     this.errors.set('hasInvalidEmail', false);
     this.errors.set('hasTooShortOldPassword', false);
@@ -111,15 +120,23 @@ export class UpdateProfileComponent implements OnInit {
       console.info(this.updateData);
       this.updateProfileService.requestToUpdate(jwt, this.updateData).subscribe({
         next: (response) => {
+          this.success = true;
+          this.responseCode = 200;
+          this.responseMessage = response.message;
+          this.currEmail = response.email;
           console.log('SUCCESS');
           console.log(response);
+          localStorage.setItem('jwt', response.jwt);
         },
         error: (e) => {
           console.log('FAIL');
-          console.log(e.error);
+          console.log(e.error.jwt);
+          this.responseMessage = e.error.message;
+          this.responseCode = e.status;
+          localStorage.setItem('jwt', e.error.jwt);
         },
         complete: () => console.info('complete')
-      })
+      });
     }
     else {
       console.warn('Invalid form submission');
