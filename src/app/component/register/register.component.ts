@@ -2,39 +2,43 @@ import { Title } from '@angular/platform-browser';
 import { Registration } from '../../interface/registration';
 import { RegistrationService } from '../../service/registration.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
 
-  /* registration interface initialization */
+export class RegisterComponent implements OnInit {
   public registrationData: Registration = {
     email: '',
     password: '',
     matching: ''
   };
-  /* marks if form submission was valid */
   public valid: boolean = true;
   public success: boolean = false;
   public showMessages: boolean = true;
-  /* map of booleans for describing what exactly went wrong */
   public errors: Map<string, boolean> = new Map<string, boolean>();
   public responseMessage: string = '';
   public responseCode: number = 0;
 
-  /* registration service will be used to send req to api */
+  /**
+   * Injects objects into the private attributes of the RegisterComponent object and then sets the title of the tab.
+   * @param registrationService Provides method to send the registration form to the API for processing.
+   * @param title Used for setting the browser tab name.
+   */
   constructor(private registrationService: RegistrationService, private title: Title) {
     this.title.setTitle('Register | Blue Pig Bank')
   }
 
   ngOnInit(): void { }
 
+  /**
+   * Called when the user submits the registration form and performs a set of validations against the inputs.  If any input
+   * is invalid, the form is not sent to the API.  Otherwise, the form is sent to the API for a second set of validations, and
+   * if successful, saves the newly registered user.
+   */
   onSubmit(): void {
-    /* reset marking class level attributes to their initial values */
     this.valid = true;
     this.success = false;
     this.showMessages = false;
