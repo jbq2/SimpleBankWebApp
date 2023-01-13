@@ -4,14 +4,15 @@ import { Router } from '@angular/router';
 import { Update } from 'src/app/interface/update';
 import { Functions } from 'src/app/lib/functions';
 import { InputRegex } from 'src/app/constant/input-regex';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html',
   styleUrls: ['./update-profile.component.css']
 })
-export class UpdateProfileComponent implements OnInit {
 
+export class UpdateProfileComponent implements OnInit {
   public currEmail: string = '';
   public updateData: Update = {
     email: '',
@@ -27,8 +28,22 @@ export class UpdateProfileComponent implements OnInit {
   public responseCode: number = 0;
   public responseMessage: string = '';
 
-  constructor(private functions: Functions,private updateProfileService: UpdateProfileService, private router: Router) { }
+  /**
+   * Injects objects to the private attributes of the UpdateProfileComponent Object and sets the browser tab name.
+   * @param functions Contains useful function for checking login status that communicate with a matching class in the API.
+   * @param updateProfileService Provides method to send the update profile form to the API for validation and processing.
+   * @param router Adds navigation from this component to another page.
+   * @param title Used for setting the browser tab name.
+   */
+  constructor(private functions: Functions,private updateProfileService: UpdateProfileService, private router: Router, private title: Title) {
+    this.title.setTitle('Profile | Blue Pig Bank');
+  }
 
+  /**
+   * Resets the attributes that are required for validation and showing messages to the client.  This also checks if the user
+   * is logged in, and if so, permits them to explore the page.  Otherwise, the user will be redirected to the login page
+   * with a message.
+   */
   ngOnInit(): void {
     this.valid = true;
     this.success = false;
@@ -65,6 +80,11 @@ export class UpdateProfileComponent implements OnInit {
     });;
   }
 
+  /**
+   * Called when the user submits a request to update their profile.  The function performs a set of validations and if the inputs are
+   * valid, the form will be sent to the API for a second set of validations.  If the form passes the API validations, the user's profile
+   * will be updated.
+   */
   onSubmit() {
     this.valid = true;
     this.success = false;

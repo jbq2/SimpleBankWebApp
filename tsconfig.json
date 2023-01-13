@@ -28,5 +28,12 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
+  },
+  "typedocOptions": {
+      "entryPoints": [
+        "src/app/component/**",
+        "src/app/lib/**",
+        "src/app/service/**"],
+      "out": "docs"
   }
 }

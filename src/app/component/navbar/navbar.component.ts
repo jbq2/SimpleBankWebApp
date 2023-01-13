@@ -9,12 +9,23 @@ import { Tab } from 'src/app/interface/tab';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
 export class NavbarComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
   tabs: Array<Tab> = [];
 
+  /**
+   * Injects various objects into the private attributes of the NavbarComponent object.
+   * @param loginService Provides the method that calls the API to verify user login.
+   * @param signoutService Provides method that calls the API to log a user out.
+   * @param router Adds navigation from this component to another page.
+   * @param route Gathers URL query parameters if thera are any.
+   */
   constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
 
+  /**
+   * Initializes the class when a user enters a page that uses this component.  The tabs are gathered from the API.
+   */
   ngOnInit() {
     let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
     this.loginService.getTabs(jwt).subscribe({
@@ -37,6 +48,9 @@ export class NavbarComponent implements OnInit {
     })
   }
 
+  /**
+   * Called when the user clicks on the "Logout" option in the navigation bar, causing the JSON web token to be removed on the client side.
+   */
   signout() {
     this.signoutService.signout();
     localStorage.removeItem('jwt');

@@ -9,10 +9,20 @@ import { Functions } from '../lib/functions';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UpdateProfileService {
 
+  /**
+   * Constructor injection of dependencies.
+   * @param http Allows for communication with the API to process a request to update a user's profile and gather the page contents.
+   */
   constructor(private http: HttpClient) { }
 
+  /**
+   * Gathers the contents of the page personalized for the user.
+   * @param jwt The JSON web token of the user.
+   * @returns Rturns an Observable containing the response of the API.
+   */
   getPageContent(jwt: string) {
     let headers = new HttpHeaders()
     .set('Content-Type', 'application/json')
@@ -22,6 +32,12 @@ export class UpdateProfileService {
       .pipe(catchError(Functions.handleHttpError));;
   }
 
+  /**
+   * Sends the update profile form to the API for validation.
+   * @param jwt The JSON web token of the user.
+   * @param updateData The form containing the necessary information to update the user's account in the database.
+   * @returns Returns an Observable containing the response of the API.
+   */
   requestToUpdate(jwt:string, updateData: Update) {
     let headers = new HttpHeaders()
     .set('Content-Type', 'application/json')

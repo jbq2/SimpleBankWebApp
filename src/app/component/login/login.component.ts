@@ -1,5 +1,5 @@
 import { LoginService } from '../../service/login.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Login } from 'src/app/interface/login';
@@ -10,8 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
 
+export class LoginComponent implements OnInit {
   public loginData: Login = {
     email: '',
     password: ''
@@ -24,10 +24,21 @@ export class LoginComponent implements OnInit {
   public responseCode: number = 0;
   public redirectedFromSignout: boolean = false;
 
-  constructor(private http: HttpClient, private loginService: LoginService, private title: Title, private route: ActivatedRoute, private router: Router) {
+  /**
+   * Injects various objects into the local attributes of the LoginComponent class.
+   * @param loginService Provides the method that calls the API to verify user login.
+   * @param title Used for setting the browser tab name.
+   * @param route Gathers URL query parameters if thera are any.
+   * @param router Adds navigation from this component to another page.
+   */
+  constructor(private loginService: LoginService, private title: Title, private route: ActivatedRoute, private router: Router) {
     this.title.setTitle('Login | Blue Pig Bank');
   }
 
+  /**
+   * Resets the class attributes that are used for validation and message showing.  It also checks for query parameters in situations where
+   * the user was redirected to the login page from a login-protected page.
+   */
   ngOnInit(): void {
     this.valid = true;
     this.success = false;
@@ -51,6 +62,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * Called when the user submits the login form and verifies the form inputs.  If any inputs are invalid, the form is not sent to the API.
+   * Otherwise, the form is sent to API which then goes through a second set of validations.
+   */
   onSubmit(): void {
     this.valid = true;
     this.success = false;
