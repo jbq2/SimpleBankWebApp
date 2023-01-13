@@ -16,31 +16,24 @@
                   <div class="alert alert-success" *ngIf="responseCode == 200">{{ responseMessage }}</div> <!-- TODO: this is temporary -->
                   <div class="alert alert-danger" *ngIf="responseCode > 200">{{ responseMessage }}</div>
                     <form class="mx-1 mx-md-4" (ngSubmit)="onSubmit()">
-                      <!-- Email input -->
                       <div class="form-outline mb-4">
                           <label class="form-label" for="form1Example13">Email address</label>
                         <input type="email" id="form1Example13" class="form-control form-control-lg" 
                         ngModel name="emailField" #emailField="ngModel" [(ngModel)]="loginData.email" />
                         <div class="alert alert-danger" *ngIf="errors.get('hasInvalidEmail')">Email is invalid</div>
                       </div>
-            
-                      <!-- Password input -->
                       <div class="form-outline mb-4">
                           <label class="form-label" for="form1Example23">Password</label>
                         <input type="password" id="form1Example23" class="form-control form-control-lg" 
                         ngModel name="passwordField" #passwordField="ngModel" [(ngModel)]="loginData.password" />
                         <div class="alert alert-danger" *ngIf="errors.get('hasTooShortPassword')">Password must be at least 8 characters</div>
                       </div>
-            
-                      <!-- Submit button -->
                       <div class="d-flex justify-content-center  mt-3 mb-5">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
                       </div>
-          
                       <div class="d-flex justify-content-start mb-2 mt-4">
                         <a href="#!">Forgot password?</a>
                       </div>
-            
                       <div class="divider d-flex align-items-center my-2">
                         <p>Don't have an account? &nbsp;&nbsp;&nbsp; <a class="btn btn-primary ml-1" href="http://localhost:4200/register"role="button">Register</a></p>
                       </div>

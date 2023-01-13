@@ -26,6 +26,8 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { UpdateProfileComponent } from './component/update-profile/update-profile.component';
+import { Functions } from './lib/functions';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
     RegisterComponent,
     LoginComponent,
     NavbarComponent,
-    DashboardComponent
+    DashboardComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,9 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
     MdbValidationModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    Functions
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
