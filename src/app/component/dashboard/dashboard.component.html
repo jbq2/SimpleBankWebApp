@@ -1,0 +1,10 @@
+<app-navbar></app-navbar>
+
+<html>
+    <body>
+        <div class="alert alert-success" *ngIf="redirectedFromLogin" >Succesfully logged in!</div>
+        <div *ngIf="loggedIn">
+            <p>Your JWT: {{ jwt }}</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+.navbar-toggler {
+    border-color: black;
+}
+
+#signout {
+    cursor: pointer;
+}
