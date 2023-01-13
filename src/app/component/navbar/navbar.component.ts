@@ -23,14 +23,13 @@ export class NavbarComponent implements OnInit {
           next: (params) => {
             if(params['redirectFrom'] != 'signout') {
               this.tabs = response;
-              console.log(response);
             }
           }
         });
       },
-      error: () => {
+      error: (e) => {
         if(localStorage.length != 0){
-          console.warn("Your session has expired");
+          console.warn(e);
         }
         localStorage.removeItem("jwt");
       },
@@ -39,8 +38,7 @@ export class NavbarComponent implements OnInit {
   }
 
   signout() {
-    let jwt = (localStorage.getItem("jwt") == null) ? '' : localStorage.getItem("jwt")!;
-    this.signoutService.signout(jwt);
+    this.signoutService.signout();
     localStorage.removeItem('jwt');
     this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} })
   }

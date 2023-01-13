@@ -86,12 +86,6 @@ export class LoginComponent implements OnInit {
       console.warn('Valid form submission on front end');
       this.loginService.loginUser(this.loginData).subscribe({
         next: (response) => {
-          /**
-           * the next clause for this observable handles a successful login attempt
-           * it displays a success message and then sets the SESSION_ID and AUTHORITIES in localStorage
-           * TODO: response message shouldn't really be shown--what should happen is that the user is redirected to a logged in home page
-           */
-          console.log(response);
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.success = true;
@@ -100,11 +94,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard'], { queryParams: {redirect: true} });
         },
         error: (e: HttpErrorResponse) => {
-          /**
-           * an error is caught upon receiving a non 200 response code
-           * if the error code is 401, the insufficient credentials were given
-           * the password field is cleared as a result for the user to try again
-           */
           this.responseCode = e.status;
           this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
           this.loginData.password = '';

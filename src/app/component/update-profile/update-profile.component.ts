@@ -46,7 +46,6 @@ export class UpdateProfileComponent implements OnInit {
       if(response.loggedIn) {
         this.updateProfileService.getPageContent(jwt).subscribe({
           next: (email) => {
-            console.info(email);
             this.currEmail = email;
             this.updateData.oldEmail = this.currEmail;
           },
@@ -117,19 +116,15 @@ export class UpdateProfileComponent implements OnInit {
     if(this.valid) {
       console.info('Valid form submission on front end');
       let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
-      console.info(this.updateData);
       this.updateProfileService.requestToUpdate(jwt, this.updateData).subscribe({
         next: (response) => {
           this.success = true;
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.currEmail = response.email;
-          console.log('SUCCESS');
-          console.log(response);
           localStorage.setItem('jwt', response.jwt);
         },
         error: (e) => {
-          console.log('FAIL');
           console.log(e.error.jwt);
           this.responseMessage = e.error.message;
           this.responseCode = e.status;

@@ -78,13 +78,10 @@ export class RegisterComponent implements OnInit {
       }
     }
 
-    console.log(this.errors);
-
     if(this.valid){
       console.info('Valid form submission on front end');
       this.registrationService.registerUser(this.registrationData).subscribe({
         next: (response) => {
-          console.log(response.email);
           this.responseCode = 200;
           this.responseMessage = response.message;
           this.success = true;
@@ -102,7 +99,6 @@ export class RegisterComponent implements OnInit {
     else{
       console.warn('Invalid form submission');
     }
-
     this.showMessages = true;
   }
 

@@ -14,9 +14,7 @@ export class RegistrationService {
   constructor(private http: HttpClient) { }
 
   registerUser(registrationData: Registration): Observable<RegistrationResponse> {
-    /* returns an a Response object wrapped in an Observable */
     return this.http.post<RegistrationResponse>(`${ApiLink.local}/register`, registrationData)
-    .pipe(catchError(Functions.handleHttpError));
-    // return this.http.get<any>(`${ApiLink.local}/list`);
+      .pipe(catchError(Functions.handleHttpError));
   }
 }

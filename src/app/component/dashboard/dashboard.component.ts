@@ -19,15 +19,12 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     let currJwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
     this.functions.isLoggedIn(currJwt).then((response) => {
-      console.log(response);
       if(response.loggedIn) {
         this.route.queryParams.subscribe({
           next: (params) => {
             this.redirectedFromLogin = params['redirect'] != null;
-            console.log(this.redirectedFromLogin);
           }
         })
-        console.info("logged in");
         this.loggedIn = true;
         this.jwt = response.updatedJwt;
         localStorage.setItem("jwt", response.updatedJwt);

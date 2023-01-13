@@ -18,7 +18,8 @@ export class UpdateProfileService {
     .set('Content-Type', 'application/json')
     .set('Authorization', `Bearer ${jwt}`)
     .set('jwt', jwt);
-    return this.http.get<string>(`${ApiLink.local}/user/content`, {headers: headers});
+    return this.http.get<string>(`${ApiLink.local}/user/content`, {headers: headers})
+      .pipe(catchError(Functions.handleHttpError));;
   }
 
   requestToUpdate(jwt:string, updateData: Update) {
@@ -28,6 +29,6 @@ export class UpdateProfileService {
     .set('Authorization', `Bearer ${jwt}`)
     .set('jwt', jwt);
     return this.http.post<UpdateProfileResponse>(`${ApiLink.local}/user/update`, updateData, {headers: headers})
-    .pipe(catchError(Functions.handleHttpError));
+      .pipe(catchError(Functions.handleHttpError));
   }
 }
