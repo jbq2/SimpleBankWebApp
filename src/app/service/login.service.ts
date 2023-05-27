@@ -34,11 +34,12 @@ export class LoginService {
    * @param jwt The JSON web token of the user.
    * @returns Returns an Observable containing a list of of Tab objects which are the navigation bar links.
    */
-  getTabs(jwt: string): Observable<Array<Tab>> {
+  getTabs(jwt: string): Observable<Tab[]> {
     let headers: HttpHeaders = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set("Authorization", `Bearer ${jwt}`)
-    .set("jwt", jwt);
+      .set('Content-Type', 'application/json')
+      .set("Authorization", `Bearer ${jwt}`)
+      .set("jwt", jwt);
+      
     return this.http.get<Array<Tab>>(`${ApiLink.local}/tabs`, {headers: headers})
       .pipe(catchError(Functions.handleHttpError));;
   }

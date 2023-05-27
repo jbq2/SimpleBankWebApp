@@ -108,11 +108,13 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('jwt', response.jwt);
           this.router.navigate(['/dashboard'], { queryParams: {redirect: true} });
         },
+
         error: (e: HttpErrorResponse) => {
           this.responseCode = e.status;
           this.responseMessage = (this.responseCode == 401) ? 'Incorrect credentials.' : e.error;
           this.loginData.password = '';
         },
+        
         complete: () => {
           console.info('complete');
         }
