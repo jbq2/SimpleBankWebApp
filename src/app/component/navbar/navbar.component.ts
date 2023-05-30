@@ -3,6 +3,7 @@ import { SignoutService } from './../../service/signout.service';
 import { LoginService } from './../../service/login.service';
 import { Component, OnInit } from '@angular/core';
 import { Tab } from 'src/app/interface/tab';
+import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,13 @@ import { Tab } from 'src/app/interface/tab';
 export class NavbarComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
   tabs: Array<Tab> = [];
+
+  tabs$!: Observable<Tab[]>;
+  private defaultTabs: Tab[] = [
+    {name: 'Login', path: '/login'},
+    {name: 'Register', path: '/register'}
+  ];
+  private authChangeEventListener = new BehaviorSubject<Tab[]>(this.defaultTabs);
 
   /**
    * Injects various objects into the private attributes of the NavbarComponent object.
@@ -28,6 +36,9 @@ export class NavbarComponent implements OnInit {
    */
   ngOnInit() {
     let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
+
+    this.tabs$ = this.authChangeEventListener.pipe(distinctUntilChanged());
+    /* OLD LOGIC */
     this.loginService.getTabs(jwt).subscribe({
       next: (response) => { 
         this.route.params.subscribe({

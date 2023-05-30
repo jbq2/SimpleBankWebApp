@@ -1,5 +1,5 @@
 import { ApiLink } from './../constant/api-link';
-import { catchError, Observable, lastValueFrom } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Login } from './../interface/login';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -42,5 +42,9 @@ export class LoginService {
       
     return this.http.get<Array<Tab>>(`${ApiLink.local}/tabs`, {headers: headers})
       .pipe(catchError(Functions.handleHttpError));;
+  }
+
+  signalLogin(jwt: string): Observable<Tab[]> {
+    return this.getTabs(jwt);
   }
 }
