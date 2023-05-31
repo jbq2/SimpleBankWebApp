@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Tab } from 'src/app/interface/tab';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { NavbarProtoService } from 'src/app/service/navbar-proto.service';
 import { SignoutService } from 'src/app/service/signout.service';
 
@@ -14,7 +14,7 @@ import { SignoutService } from 'src/app/service/signout.service';
 export class NavbarProtoComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
 
-  tabs$!: BehaviorSubject<Tab[]>;
+  tabs$!: Observable<Tab[]>;
 
   constructor(private router: Router, private route: ActivatedRoute, private signoutService: SignoutService, private navbarProtoService: NavbarProtoService) { }
 
@@ -22,7 +22,7 @@ export class NavbarProtoComponent implements OnInit {
    * Initializes the class when a user enters a page that uses this component.  The tabs are gathered from the API.
    */
   ngOnInit() {
-    this.tabs$ = this.navbarProtoService.getLinksSubject();
+    this.tabs$ = this.navbarProtoService.getLinksObservable(); // obtain the BehaviorSubject from the service
   }
 
   signout() {

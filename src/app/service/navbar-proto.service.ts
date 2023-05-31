@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Tab } from '../interface/tab';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginService } from './login.service';
 
 @Injectable({
@@ -15,13 +15,13 @@ export class NavbarProtoService {
     {name: 'Register', path: '/register'}
   ];
 
-  getLinksSubject(): BehaviorSubject<Tab[]> {
-    return this.navbarLinksEmitter;
+  getLinksObservable(): Observable<Tab[]> {
+    this.updateLinks();
+    return this.navbarLinksEmitter.asObservable();
   }
 
-  updateLinks(): void {
+  private updateLinks(): void {
     let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
-
     let observer = {
       next: (response: Tab[]) => { this.navbarLinksEmitter.next(response); },
       error:(e: any) => { this.handleError(e, 'updateLinks()') },
