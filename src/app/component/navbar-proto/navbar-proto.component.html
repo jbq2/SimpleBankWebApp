@@ -1,0 +1,6 @@
+<div>
+    <ul *ngFor="let link of tabs$ | async">
+        <a *ngIf="link.name != 'Logout'; else signOut" href="{{ link.path }}">{{ link.name }}</a>
+        <ng-template #signOut><a (click)="signout()"></a></ng-template>
+    </ul>
+</div>
