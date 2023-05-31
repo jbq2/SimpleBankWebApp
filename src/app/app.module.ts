@@ -28,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { UpdateProfileComponent } from './component/update-profile/update-profile.component';
 import { Functions } from './lib/functions';
+import { NavbarProtoComponent } from './component/navbar-proto/navbar-proto.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { Functions } from './lib/functions';
     LoginComponent,
     NavbarComponent,
     DashboardComponent,
-    UpdateProfileComponent
+    UpdateProfileComponent,
+    NavbarProtoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { NavbarService } from './../../service/navbar.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SignoutService } from './../../service/signout.service';
 import { LoginService } from './../../service/login.service';
@@ -15,12 +16,7 @@ export class NavbarComponent implements OnInit {
   baseUrl: string = 'http://localhost:4200';
   tabs: Array<Tab> = [];
 
-  tabs$!: Observable<Tab[]>;
-  private defaultTabs: Tab[] = [
-    {name: 'Login', path: '/login'},
-    {name: 'Register', path: '/register'}
-  ];
-  private authChangeEventListener = new BehaviorSubject<Tab[]>(this.defaultTabs);
+  tabs$!: BehaviorSubject<Tab[]>;
 
   /**
    * Injects various objects into the private attributes of the NavbarComponent object.
@@ -29,7 +25,7 @@ export class NavbarComponent implements OnInit {
    * @param router Adds navigation from this component to another page.
    * @param route Gathers URL query parameters if thera are any.
    */
-  constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private loginService: LoginService, private signoutService: SignoutService, private router: Router, private route: ActivatedRoute, private navbarService: NavbarService) { }
 
   /**
    * Initializes the class when a user enters a page that uses this component.  The tabs are gathered from the API.
@@ -37,7 +33,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     let jwt = (localStorage.getItem('jwt') == null) ? 'none' : localStorage.getItem('jwt')!;
 
-    this.tabs$ = this.authChangeEventListener.pipe(distinctUntilChanged());
+    this.tabs$ = this.navbarService.getLinksSubject();
+
     /* OLD LOGIC */
     this.loginService.getTabs(jwt).subscribe({
       next: (response) => { 
@@ -65,6 +62,6 @@ export class NavbarComponent implements OnInit {
   signout() {
     this.signoutService.signout();
     localStorage.removeItem('jwt');
-    this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} })
+    this.router.navigate(['/login'], { queryParams: {redirectFrom: 'signout'} });
   }
 }

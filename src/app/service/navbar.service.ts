@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { Tab } from '../interface/tab';
 import { ApiLink } from '../constant/api-link';
 
@@ -10,6 +10,10 @@ import { ApiLink } from '../constant/api-link';
 export class NavbarService {
 
   private httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json'}) };
+  private authChangeEventEmitter = new BehaviorSubject<Tab[]>([
+    {name: 'Login', path: '/login'},
+    {name: 'Register', path: '/register'}
+  ]);
 
   constructor(private http: HttpClient) { }
 
@@ -26,5 +30,13 @@ export class NavbarService {
 
       return of([] as Tab[]); 
     }
+  }
+
+  setTabs(response: Tab[]) {  
+    this.authChangeEventEmitter.next(response);
+  }
+
+  getLinksSubject(): BehaviorSubject<Tab[]> {
+    return this.authChangeEventEmitter;
   }
 }

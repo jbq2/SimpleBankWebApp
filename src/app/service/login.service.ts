@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Functions } from '../lib/functions';
 import { LoginResponse } from '../interface/login-response';
 import { Tab } from '../interface/tab';
+import { NavbarService } from './navbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class LoginService {
    * Constructor injection of dependencies.
    * @param http Allows for calling the API to log a user in and get the correct navigation bar tabs for the user.
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private navbarService: NavbarService) { }
 
   /**
    * Sends the login form to the API.
@@ -44,7 +45,11 @@ export class LoginService {
       .pipe(catchError(Functions.handleHttpError));;
   }
 
-  signalLogin(jwt: string): Observable<Tab[]> {
-    return this.getTabs(jwt);
+  signalLogin(jwt: string): void {
+    this.getTabs(jwt).subscribe({
+      next: (response) => { this.navbarService.setTabs(response) }, // call NavbarService.setTabs(response);
+      error: (e) => console.log(e),
+      complete: () => console.log('done')
+    });
   }
 }
